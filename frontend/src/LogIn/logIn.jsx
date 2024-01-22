@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import "./logIn.css";
 import backImg from "../img/backImg.webp";
+import { logInRequest } from "../server/server";
 
 const Wrapper = styled.div`
     display: flex;
@@ -29,23 +30,55 @@ const Content = styled.form`
     justify-content: space-around;
 `;
 const LogIn = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        // 여기서 logInRequest 함수를 호출
+        logInRequest(email, password);
+    };
+
     return (
         <Wrapper>
             <FormContainer>
                 <h1 style={{ margin: "0px" }}>돌아오신 것을 환영해요!</h1>
                 <span>다시 만나니까 너무 반가워요!</span>
 
-                <Content>
+                <Content onSubmit={handleSubmit}>
                     <label name="userId">
                         이메일 또는 전화번호
-                        <input type="text" name="userId" required></input>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={handleEmailChange}
+                            name="userId"
+                            required
+                        ></input>
                     </label>
                     <label name="userPw">
                         비밀번호
-                        <input type="text" name="userPw" required></input>
+                        <input
+                            type="password"
+                            value={password}
+                            onChange={handlePasswordChange}
+                            name="userPw"
+                            required
+                        ></input>
                     </label>
 
-                    <button id="submit">로그인</button>
+                    <button id="submit" type="submit">
+                        로그인
+                    </button>
                 </Content>
             </FormContainer>
         </Wrapper>
