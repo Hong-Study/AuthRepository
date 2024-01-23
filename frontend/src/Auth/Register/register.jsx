@@ -4,6 +4,7 @@ import "../auth.css";
 import backImg from "../img/backImg.webp";
 import { registerRequest } from "../../server/server";
 import { checksumRequest } from "../../server/server";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     display: flex;
@@ -34,11 +35,12 @@ const Content = styled.form`
 `;
 
 const Register = () => {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [checksum, setChecksum] = useState("");
-    const [name, setName] = useState("");
-
+    const [userName, setName] = useState("");
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     };
@@ -57,14 +59,23 @@ const Register = () => {
 
     const handleRegister = (e) => {
         e.preventDefault();
-
+        console.log(email, password, userName, checksum);
         // 여기서 logInRequest 함수를 호출
-        registerRequest(email, password, name, checksum);
+        registerRequest(email, password, userName, checksum)
+            .then((status) => {
+                if (status === 200)
+                    navigate("/login");
+            })
+
     };
 
     const handleChecksum = (e) => {
         e.preventDefault();
 
+        if(email === ""){
+            alert("이메일을 입력해주세요.");
+            return;
+        }
         // 여기서 logInRequest 함수를 호출
         checksumRequest(email);
     }
@@ -72,7 +83,7 @@ const Register = () => {
     return (
         <Wrapper>
             <FormContainer>
-                <Content onSubmit={handleRegister} onClick={handleChecksum}>
+                <Content onSubmit={handleRegister}>
                     <label name="email">
                         이메일 또는 전화번호
                         <input
@@ -83,7 +94,7 @@ const Register = () => {
                             required
                         ></input>
                     </label>
-                    <button id="emailChecksum" type="button">
+                    <button id="button" type="button" onClick={handleChecksum}>
                         이메일 인증 번호 전송
                     </button>
                     <label name="checksum">
@@ -110,7 +121,7 @@ const Register = () => {
                         유저 이름
                         <input
                             type="text"
-                            value={name}
+                            value={userName}
                             onChange={handleNameChange}
                             name="name"
                             required

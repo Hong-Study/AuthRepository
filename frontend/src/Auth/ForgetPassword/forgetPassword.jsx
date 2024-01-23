@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import "../auth.css";
 import backImg from "../img/backImg.webp";
+import { forgetPasswordRequest } from "../../server/server";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     display: flex;
@@ -30,6 +32,8 @@ const Content = styled.form`
 `;
 
 const ForgetPassword = () => {
+    const navigate = useNavigate();
+
     const [email, setEmail] = useState("");
 
     const handleEmailChange = (e) => {
@@ -40,13 +44,17 @@ const ForgetPassword = () => {
         e.preventDefault();
 
         // 여기서 logInRequest 함수를 호출
-        // forgotPasswordRequest(email);
+        forgetPasswordRequest(email)
+            .then((status) => {
+                if (status === 200)
+                    navigate("/login");
+            });
     };
+
     return (
         <Wrapper>
             <FormContainer>
                 <h1 style={{ margin: "0px" }}>당신의 비번을 찾아드립니다</h1>
-
                 <Content onSubmit={handleForgotPassword}>
                     <label name="userId">
                         이메일
@@ -58,7 +66,9 @@ const ForgetPassword = () => {
                             required
                         ></input>
                     </label>
-                    <button type="submit">비밀번호 찾기</button>
+                    <button id="submit" type="submit">
+                        비밀번호 찾기
+                    </button>
                 </Content>
             </FormContainer>
         </Wrapper>

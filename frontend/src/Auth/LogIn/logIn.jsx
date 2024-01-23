@@ -46,7 +46,12 @@ const LogIn = () => {
         e.preventDefault();
 
         // 여기서 logInRequest 함수를 호출
-        logInRequest(email, password);
+        logInRequest(email, password)
+            .then((status) => {
+                if(status === 200)
+                    alert("로그인에 성공했습니다!");
+                // 추후 페이지 전환
+            });
     };
 
     return (
