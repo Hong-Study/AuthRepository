@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import "./logIn.css";
+import "../auth.css";
 import backImg from "../img/backImg.webp";
-import { logInRequest } from "../server/server";
 
 const Wrapper = styled.div`
     display: flex;
@@ -14,49 +13,43 @@ const Wrapper = styled.div`
 `;
 
 const FormContainer = styled.div`
-    width: 50%;
+    width: 40%;
     height: 40%;
     padding: 32px;
-    border-radius: 8px;
+    border-radius: px;
     background-color: #313338;
     color: white;
 `;
 
 const Content = styled.form`
-    height: 70%;
-    margin-top: 20px;
+    height: 45%;
+    margin-top: 60px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
 `;
-const LogIn = () => {
+
+const ForgetPassword = () => {
     const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
     };
 
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-    };
-
-    const handleSubmit = (e) => {
+    const handleForgotPassword = (e) => {
         e.preventDefault();
 
         // 여기서 logInRequest 함수를 호출
-        logInRequest(email, password);
+        // forgotPasswordRequest(email);
     };
-
     return (
         <Wrapper>
             <FormContainer>
-                <h1 style={{ margin: "0px" }}>돌아오신 것을 환영해요!</h1>
-                <span>다시 만나니까 너무 반가워요!</span>
+                <h1 style={{ margin: "0px" }}>당신의 비번을 찾아드립니다</h1>
 
-                <Content onSubmit={handleSubmit}>
+                <Content onSubmit={handleForgotPassword}>
                     <label name="userId">
-                        이메일 또는 전화번호
+                        이메일
                         <input
                             type="email"
                             value={email}
@@ -65,24 +58,11 @@ const LogIn = () => {
                             required
                         ></input>
                     </label>
-                    <label name="userPw">
-                        비밀번호
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={handlePasswordChange}
-                            name="userPw"
-                            required
-                        ></input>
-                    </label>
-
-                    <button id="submit" type="submit">
-                        로그인
-                    </button>
+                    <button type="submit">비밀번호 찾기</button>
                 </Content>
             </FormContainer>
         </Wrapper>
     );
 };
 
-export default LogIn;
+export default ForgetPassword;
