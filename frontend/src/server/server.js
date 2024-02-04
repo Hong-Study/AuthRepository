@@ -5,12 +5,11 @@ const UserAuthServerAddr = "http://localhost:4000/api/user/auth/";
 const UserServerAddr = "http://localhost:4000/api/user/user";
 
 export const logInRequest = async (email, password) => {
-    let data = {
+
+    axios.post(UserAuthServerAddr + "login", {
         email: email,
         password: password,
-    }
-
-    axios.post(UserAuthServerAddr + "login", data)
+    })
         .then(response => {
             // Body에 accessToken, refreshToken이 담김
             const data = response.body.json();
@@ -23,7 +22,7 @@ export const logInRequest = async (email, password) => {
                 alert("로그인이 완료되었습니다");
             }
             console.log(response);
-        return response.status;
+            return response.status;
         })
         .catch(error => {
             console.error("데이터를 받아오는 데 실패했습니다:", error);
@@ -31,14 +30,12 @@ export const logInRequest = async (email, password) => {
 };
 
 export const registerRequest = async (email, password, userName, checksum) => {
-    axios.post(UserAuthServerAddr + "register")
-        .body({
-            email: email,
-            password: password,
-            userName: userName,
-            checksum: checksum
-        })
-        .then(response => {
+    axios.post(UserAuthServerAddr + "register", {
+        email: email,
+        password: password,
+        userName: userName,
+        checksum: checksum
+        }).then(response => {
             console.log(response);
 
             if (response.status !== 200) {
@@ -56,10 +53,7 @@ export const registerRequest = async (email, password, userName, checksum) => {
 }
 
 export const checksumRequest = async (email) => {
-    axios.post(UserAuthServerAddr + "send-email",
-        new URLSearchParams({
-            email: email
-        }))
+    axios.post(UserAuthServerAddr + "send-email", { email: email })
         .then(response => {
             if (response.status !== 200) {
                 const data = response.json();
