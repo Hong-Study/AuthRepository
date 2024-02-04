@@ -1,13 +1,16 @@
-import React, { useState } from "react";
 import axios from "axios";
+import { json } from "react-router-dom";
 
-const userServerAddr = "http://localhost:4000";
-export const logInRequest = async (email, password, history) => {
-    axios.post(userServerAddr + "/api/user/auth/login",
-        new URLSearchParams({
-            email: email,
-            password: password,
-        }))
+const UserAuthServerAddr = "http://localhost:4000/api/user/auth/";
+const UserServerAddr = "http://localhost:4000/api/user/user";
+
+export const logInRequest = async (email, password) => {
+    let data = {
+        email: email,
+        password: password,
+    }
+
+    axios.post(UserAuthServerAddr + "login", data)
         .then(response => {
             // Body에 accessToken, refreshToken이 담김
             const data = response.body.json();
@@ -19,7 +22,8 @@ export const logInRequest = async (email, password, history) => {
                 document.cookie = `refreshToken=${data.refreshToken}`;
                 alert("로그인이 완료되었습니다");
             }
-            return response.status;
+            console.log(response);
+        return response.status;
         })
         .catch(error => {
             console.error("데이터를 받아오는 데 실패했습니다:", error);
@@ -27,7 +31,7 @@ export const logInRequest = async (email, password, history) => {
 };
 
 export const registerRequest = async (email, password, userName, checksum) => {
-    axios.post(userServerAddr + "/api/user/auth/register")
+    axios.post(UserAuthServerAddr + "register")
         .body({
             email: email,
             password: password,
@@ -52,7 +56,7 @@ export const registerRequest = async (email, password, userName, checksum) => {
 }
 
 export const checksumRequest = async (email) => {
-    axios.post(userServerAddr + "/api/user/auth/send-email",
+    axios.post(UserAuthServerAddr + "send-email",
         new URLSearchParams({
             email: email
         }))
@@ -70,7 +74,7 @@ export const checksumRequest = async (email) => {
 }
 
 export const forgetPasswordRequest = async (email) => {
-    axios.post(userServerAddr + "/api/user/auth/reset-password")
+    axios.post(UserAuthServerAddr + "reset-password")
         .body({
             email: email
         })

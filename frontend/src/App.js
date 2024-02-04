@@ -6,6 +6,7 @@ import { Routes, Route } from "react-router-dom";
 function App() {
     return (
         <Routes>
+            <Route path="/" element={<LogIn />}></Route>
             <Route path="/login" element={<LogIn />}></Route>
             <Route path="/forget-password" element={<ForgetPassowrd />}></Route>
             <Route path="/register" element={<Register />}></Route>
